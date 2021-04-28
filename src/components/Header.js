@@ -1,10 +1,15 @@
-import Button from './components/Button';
+import Button from './Button';
 
 const Header = () => {
+
+    const onClick = e => {
+        alert(e.currentTarget.innerHTML);
+        };
+
     return (
         <header className="header">
             <h1>Task Tracker</h1>
-            <Button className="btn">Add</Button>
+            <Button onClick={onClick}/>
         </header>
     )
 }
@@ -29,4 +34,3 @@ const Header = () => {
 // Then we add this variable to the style attr like this : style={ headingStyle }
 
 export default Header;
-
