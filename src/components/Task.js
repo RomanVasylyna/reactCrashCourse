@@ -1,16 +1,12 @@
-import React from 'react'
+import React from 'react';
+import { FaTimes } from 'react-icons/fa';
 
-const Task = ({ task }) => {
+const Task = ({ task, onDelete, onToggle }) => {  
 
-    const setReminder = e => {
-    alert(e.currentTarget.innerHTML);    
-    }
-    
     return (
-        <div className="task" onClick={ setReminder }>
-         <h3>{ task.text }</h3>
+        <div className={task.reminder ? "task reminder" : "task"} onDoubleClick={ () => onToggle(task.id) }>
+         <h3>{ task.text } {<FaTimes style={ {color:"red"} }  onClick={ () => onDelete(task.id) }/>}</h3>
          <p>{ task.day }</p>   
-         <span>X</span>
         </div>
     )
 }
