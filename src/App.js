@@ -25,6 +25,16 @@ function App() {
       reminder: true
     }
   ]);
+  
+
+  // Adding a new task
+  // getting a new task obj as a param to the function from child component
+  const addTask = task => {
+  const id = Math.floor(Math.random() * 10000) + 1;
+  const newTask = { id, ...task};
+  setTasks([...tasks, newTask]);  
+  console.log(newTask);
+  }
 
   // Delete Task
   const deleteTask = (id) => {
@@ -34,28 +44,30 @@ function App() {
   // Toggle Reminder's Class   
   const toggleReminder = id => {
     // e.currentTarget.classList.toggle('reminder');
-    setTasks(tasks.map(task => task.id === id ? {...task, reminder: !task.reminder} : task));
+    setTasks(tasks.map(task => task.id === id ? { ...task, reminder: !task.reminder } : task));
     console.log(tasks);
   }
 
-  //Add Task
-  const addTask = task => {
-    console.log(task);
+  // Toggle Form
+  const toggleForm = () => {
+  console.log('Penis');
   }
+  
 
   return (
     <div className="container">
-      <AddTask/>
       {/* If we pass number/boolean we have to use {} for attributes*/}
-      <Header />
+      <Header onToggleForm={ toggleForm }/>
+
+      {/* Passing addTask function as a prop */}
+      <AddTask onAdd={ addTask }/> 
 
       {/* Tasks */}
       { tasks.length > 0 ?
-        <Tasks tasks={tasks}
+        <Tasks
+          tasks={tasks}
           onDelete={deleteTask}
-          onToggle={ toggleReminder }
-          onInput={ addTask }
-          />
+          onToggle={toggleReminder} />
         : 'No Tasks'}
 
     </div>

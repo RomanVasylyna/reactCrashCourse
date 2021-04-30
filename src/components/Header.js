@@ -1,15 +1,11 @@
 import Button from './Button';
 
-const Header = () => {
-
-    const onClick = e => {
-        alert(e.currentTarget.innerHTML);
-        };
+const Header = ({ onToggleForm }) => {
 
     return (
         <header className="header">
             <h1>Task Tracker</h1>
-            <Button onClick={onClick}/>
+            <Button onToggleForm={ onToggleForm }/>
         </header>
     )
 }
