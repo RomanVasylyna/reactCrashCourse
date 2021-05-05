@@ -25,6 +25,9 @@ function App() {
       reminder: true
     }
   ]);
+
+  // Show/Hide Form for adding tasks
+  let [showForm, setShowForm] = useState(false);
   
 
   // Adding a new task
@@ -50,17 +53,17 @@ function App() {
 
   // Toggle Form
   const toggleForm = () => {
-  console.log('Penis');
+  setShowForm(!showForm);
   }
   
 
   return (
     <div className="container">
       {/* If we pass number/boolean we have to use {} for attributes*/}
-      <Header onToggleForm={ toggleForm }/>
+      <Header onToggleForm={ toggleForm } showForm={ showForm }/>
 
       {/* Passing addTask function as a prop */}
-      <AddTask onAdd={ addTask }/> 
+      <AddTask onAdd={ addTask } showForm={ showForm }/> 
 
       {/* Tasks */}
       { tasks.length > 0 ?

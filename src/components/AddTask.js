@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const AddTask = ({ onAdd }) => {
+const AddTask = ({ onAdd, showForm }) => {
 
     // Each of these values reflect a specific input/checkbox
     const [text, setText] = useState('');
@@ -28,7 +28,7 @@ const AddTask = ({ onAdd }) => {
 
 
     return (
-        <form className="add-form" onSubmit={onSubmit}>
+        <form className={ showForm ? 'add-form' : 'd-none'} onSubmit={onSubmit}>
             <div className="form-control">
                 <label> Task </label>
                 <input type="text"

@@ -1,11 +1,15 @@
 import Button from './Button';
 
-const Header = ({ onToggleForm }) => {
+const Header = ({ onToggleForm, showForm }) => {
 
     return (
         <header className="header">
             <h1>Task Tracker</h1>
-            <Button onToggleForm={ onToggleForm }/>
+            <Button onToggleForm={ onToggleForm } 
+            showForm={ showForm }
+            color={ showForm ? 'red' : 'green'}
+            text={showForm ? 'Close' : 'Add'}
+            />
         </header>
     )
 }
@@ -24,7 +28,7 @@ const Header = ({ onToggleForm }) => {
 // Some of the ways of adding css to the app
 // const headingStyle = {
 // color:"red",
-// background:"black"
+// backgroundColor:"red"
 // }
 
 // Then we add this variable to the style attr like this : style={ headingStyle }
