@@ -1,69 +1,97 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Tasks from './components/Tasks';
 import AddTask from './components/AddTask';
 
 
 function App() {
-  let [tasks, setTasks] = useState([
-    {
-      id: 1,
-      text: 'Doctor\'s appointment',
-      day: "Apr 11 2021",
-      reminder: true
-    },
-    {
-      id: 2,
-      text: 'Colonoscopy',
-      day: "Mar 11 2020",
-      reminder: false
-    },
-    {
-      id: 3,
-      text: 'Prostate massage',
-      day: "Sep 5 2019",
-      reminder: true
-    }
-  ]);
+
+  let [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+  fetchTasks();
+  console 
+  }, []);
 
   // Show/Hide Form for adding tasks
   let [showForm, setShowForm] = useState(false);
   
+  // Fetching tasks
+  const fetchTasks = async () => {
+    const res = await fetch('http://localhost:5000/tasks')
+    const data = await res.json()
+
+    return data;
+  }
+
 
   // Adding a new task
   // getting a new task obj as a param to the function from child component
-  const addTask = task => {
-  const id = Math.floor(Math.random() * 10000) + 1;
-  const newTask = { id, ...task};
-  setTasks([...tasks, newTask]);  
-  console.log(newTask);
+  const addTask = async (task) => {
+
+    const res = await fetch(`http://localhost:5000/tasks`, {
+      method: 'POST',
+
+      headers: {
+        'Content-type': 'application/json', 
+      },
+
+      body: JSON.stringify(task)
+    })
+
+    const data = await res.json();
+     
+    setTasks([...tasks, data]);
+    
+
+    // const id = Math.floor(Math.random() * 10000) + 1;
+    // const newTask = { id, ...task };
+    // setTasks([...tasks, newTask]);
+    // console.log(newTask);
   }
 
   // Delete Task
   const deleteTask = (id) => {
-    setTasks(tasks.filter(task => task.id != id));
+    fetch(`http://localhost:5000/tasks/${id}`, {
+      method: 'DELETE'
+    })
+
+    setTasks(tasks.filter(task => task.id !== id));
   };
 
   // Toggle Reminder's Class   
   const toggleReminder = id => {
-    // e.currentTarget.classList.toggle('reminder');
-    setTasks(tasks.map(task => task.id === id ? { ...task, reminder: !task.reminder } : task));
-    console.log(tasks);
+
+    const task = await fetch(`http://localhost:5000/tasks/${id}`, {
+      method: 'PUT',
+
+      headers: {
+        'Content-type': 'application/json', 
+      },
+
+      body: JSON.stringify(task)
+    })
+
+    const updatedReminder = { ...task, reminder: !reminder };
+
+    const data = await res.json();
+
+    setTasks(tasks.map(task => task.id === id ? { ...task, reminder: !data.reminder } : task));
   }
 
   // Toggle Form
   const toggleForm = () => {
-  setShowForm(!showForm);
+    setShowForm(!showForm);
   }
-  
+
 
   return (
     <div className="container">
       {/* If we pass number/boolean we have to use {} for attributes*/}
-      <Header onToggleForm={ toggleForm } showForm={ showForm }/>
+      <Header onToggleForm={toggleForm} showForm={showForm} />
 
       {/* Passing addTask function as a prop */}
-      <AddTask onAdd={ addTask } showForm={ showForm }/> 
+      <AddTask onAdd={addTask} showForm={showForm} />
 
       {/* Tasks */}
       { tasks.length > 0 ?
