@@ -9,8 +9,11 @@ function App() {
   let [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-  fetchTasks();
-  console 
+  const getTasks = async() => {
+  const tasksFromServer = await fetchTasks();
+  setTasks(tasksFromServer); 
+  }; 
+  getTasks();
   }, []);
 
   // Show/Hide Form for adding tasks
@@ -19,8 +22,18 @@ function App() {
   // Fetching tasks
   const fetchTasks = async () => {
     const res = await fetch('http://localhost:5000/tasks')
-    const data = await res.json()
+    const data = await res.json();
 
+    console.log(data);
+    return data;
+  }
+
+  // Fetching Single task by id
+  const fetchTask = async (id) => {
+    const res = await fetch(`http://localhost:5000/tasks/${id}`)
+    const data = await res.json();
+
+    console.log(data);
     return data;
   }
 
@@ -31,7 +44,7 @@ function App() {
 
     const res = await fetch(`http://localhost:5000/tasks`, {
       method: 'POST',
-
+      
       headers: {
         'Content-type': 'application/json', 
       },
@@ -60,23 +73,21 @@ function App() {
   };
 
   // Toggle Reminder's Class   
-  const toggleReminder = id => {
+  const toggleReminder = async (id) => {
+    const taskToToggle = await fetchTask(id);
+    const updatedTask = { ...taskToToggle, reminder: !taskToToggle.reminder};
 
-    const task = await fetch(`http://localhost:5000/tasks/${id}`, {
-      method: 'PUT',
-
-      headers: {
-        'Content-type': 'application/json', 
-      },
-
-      body: JSON.stringify(task)
-    })
-
-    const updatedReminder = { ...task, reminder: !reminder };
+    const res = await fetch(`http://localhost:5000/tasks/${id}`, {
+    method:'PUT',
+    headers: {
+      'Content-Type' : 'application/json'
+    },
+    body: JSON.stringify(updatedTask)  
+    });
 
     const data = await res.json();
 
-    setTasks(tasks.map(task => task.id === id ? { ...task, reminder: !data.reminder } : task));
+    setTasks(tasks.map(task => task.id === id ? { ...task, reminder: data.reminder } : task));
   }
 
   // Toggle Form

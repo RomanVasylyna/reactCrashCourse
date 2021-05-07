@@ -1,16 +1,22 @@
 {
   "tasks": [
     {
-      "text": "Take a test",
-      "day": "Friday",
-      "reminder": true,
-      "id": 1
-    },
-    {
       "text": "Get pill from Corona",
       "day": "Tuesday",
       "reminder": true,
       "id": 2
+    },
+    {
+      "text": "Visit Hooker",
+      "day": "Saturday",
+      "reminder": true,
+      "id": 4
+    },
+    {
+      "text": "Buy Ice Cream",
+      "day": "Tuesday",
+      "reminder": true,
+      "id": 5
     }
   ]
 }
